@@ -12,7 +12,7 @@ from scipy.stats import norm
 
 
 LEARNING_RATE = 1e-4
-WEIGHT_DECAY = 1e-6
+WEIGHT_DECAY = 0.
 
 
 def _draw_chart(y_series: pd.Series):
@@ -45,11 +45,11 @@ def chart_y_histogram(y_series: pd.Series):
 
 def train(x_df: pd.DataFrame, y_series: pd.Series, epochs: int = 100):
     """
-    Trains the LSTMStocksModule model
+    Trains the CNNStocksModule model
     :param x_df: Inputs consisting of sequences of stock price returns
     :param y_series: Targets consisting of returns some days in advance of the reference dates
     :param epochs: Number of complete iterations to go through the data in order to train
-    :return: The trained LSTMStocksModule model
+    :return: The trained CNNStocksModule model
     """
     # Put data into GPU if possible
     dataloader_kwargs = {}
@@ -71,7 +71,7 @@ def train(x_df: pd.DataFrame, y_series: pd.Series, epochs: int = 100):
         model = model.cuda()
 
     loss_func = partial(torch.nn.functional.huber_loss, delta=0.02)
-    chart_y_histogram(y_series)
+    # chart_y_histogram(y_series)
 
     optimizer = torch.optim.Adam(
         model.parameters(),
@@ -90,7 +90,7 @@ def train(x_df: pd.DataFrame, y_series: pd.Series, epochs: int = 100):
             optimizer.step()
             total_loss += loss.cpu().detach().numpy()
 
-        print(f"[Epoch {i}] Loss: {total_loss:.4f}")
+        # print(f"[Epoch {i}] Loss: {total_loss:.4f}")
 
     return model
 
