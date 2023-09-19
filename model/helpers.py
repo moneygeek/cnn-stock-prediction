@@ -12,7 +12,7 @@ from scipy.stats import norm
 
 
 LEARNING_RATE = 1e-4
-WEIGHT_DECAY = 0.
+WEIGHT_DECAY = 1e-6
 
 
 def _draw_chart(y_series: pd.Series):

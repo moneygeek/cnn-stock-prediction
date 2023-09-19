@@ -3,7 +3,7 @@ import torch
 
 
 class CNNStocksModule(nn.Module):
-    OUT_CHANNELS = 20  # Number of CNN channels
+    OUT_CHANNELS = 30  # Number of CNN channels
     KERNEL_SIZE = 10  # Size of CNN kernel
     BIAS = True  # Whether to include the bias term for some of CNN's equations
 
