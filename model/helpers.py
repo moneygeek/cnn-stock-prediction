@@ -66,11 +66,11 @@ def train(x_df: pd.DataFrame, y_series: pd.Series, epochs: int = 100):
     train_dataset = CNNStocksDataset(x_tensor, y_tensor)
     train_dataloader = DataLoader(train_dataset, batch_size=64, shuffle=True, **dataloader_kwargs)
 
+    loss_func = partial(torch.nn.functional.huber_loss, delta=0.02)
+
     model = CNNStocksModule(x_df.shape[1]).train()
     if torch.cuda.is_available():  # Train on GPU if possible
         model = model.cuda()
-
-    loss_func = partial(torch.nn.functional.huber_loss, delta=0.02)
     # chart_y_histogram(y_series)
 
     optimizer = torch.optim.Adam(

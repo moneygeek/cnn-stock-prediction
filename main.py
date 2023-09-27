@@ -7,6 +7,7 @@ import yfinance as yf
 from matplotlib import pyplot as plt
 from sklearn.metrics import r2_score, mean_absolute_error
 
+from model.backtester import simple_backtest
 from model.helpers import train, predict
 from model.preprocessors import process_inputs, process_targets
 
@@ -62,18 +63,4 @@ if __name__ == "__main__":
 
     # Conduct simple backtest of the strategy
     results_df = pd.concat(forecasts)
-
-    # Calculate cumulative returns from following the model
-    model_results_df = results_df.copy()
-    model_results_df.loc[model_results_df['Forecast'] <= 0.] = 0.
-    model_series = (model_results_df['Actual'] + 1.).cumprod() - 1.
-    model_cumulative_return = model_series.iloc[-1]
-    model_stdev = model_results_df['Actual'].std() * np.sqrt(252.)
-
-    # Calculate cumulative returns from buying and holding
-    buy_hold_series = (results_df['Actual'] + 1.).cumprod() - 1.
-    buy_hold_cumulative_return = buy_hold_series.iloc[-1]
-    buy_hold_stdev = results_df['Actual'].std() * np.sqrt(252.)
-
-    print(f"Model cumulative returns: {model_cumulative_return:.4f}, Buy and hold: {buy_hold_cumulative_return:.4f}")
-    print(f"Model standard deviation: {model_stdev:.4f}, Buy and hold: {buy_hold_stdev:.4f}")
+    simple_backtest(results_df)

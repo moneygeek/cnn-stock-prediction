@@ -25,8 +25,7 @@ class CNNStocksModule(nn.Module):
 
     def forward(self, x):
         out = self.cnn(x.unsqueeze(1))
-        out = self.pool(out)
+        out = self.pool(out).squeeze()
         out = torch.softmax(out, dim=1)
-        out = torch.flatten(out, start_dim=1)
         out = self.linear(out).squeeze()
         return out
