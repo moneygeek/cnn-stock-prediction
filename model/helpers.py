@@ -71,7 +71,6 @@ def train(x_df: pd.DataFrame, y_series: pd.Series, epochs: int = 100):
     model = CNNStocksModule(x_df.shape[1]).train()
     if torch.cuda.is_available():  # Train on GPU if possible
         model = model.cuda()
-    # chart_y_histogram(y_series)
 
     optimizer = torch.optim.Adam(
         model.parameters(),
@@ -89,8 +88,6 @@ def train(x_df: pd.DataFrame, y_series: pd.Series, epochs: int = 100):
             loss.backward()
             optimizer.step()
             total_loss += loss.cpu().detach().numpy()
-
-        # print(f"[Epoch {i}] Loss: {total_loss:.4f}")
 
     return model
 
